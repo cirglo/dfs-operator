@@ -43,6 +43,12 @@ spec:
                 default: 5135
                 format: int32
                 type: integer
+              dataNodeStorageSize:
+                default: 10Gi
+                type: string
+              dataNodetorageClassName:
+                default: default
+                type: string
               nameNodePort:
                 default: 50070
                 format: int32
@@ -57,6 +63,8 @@ spec:
                 type: integer
             required:
             - dataNodePort
+            - dataNodeStorageSize
+            - dataNodetorageClassName
             - nameNodePort
             - numDataNodeServers
             - numNameNodeServers

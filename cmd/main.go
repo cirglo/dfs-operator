@@ -51,6 +51,12 @@ var (
 	setupLog   = ctrl.Log.WithName("setup")
 )
 
+//go:embed assets/data_nodes_stateful_set.yaml
+var dataNodeStatefulSet embed.FS
+
+//go:embed assets/name_nodes_deployment.yaml
+var nameNodeDeployment embed.FS
+
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
@@ -88,12 +94,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	//go:embed assets/data_nodes_stateful_set.yaml
-	var dataNodeStatefulSet embed.FS
-
-	//go:embed assets/name_node_deployment.yaml
-	var nameNodeDeployment embed.FS
-
 	statefulSetBytes, err := dataNodeStatefulSet.ReadFile("assets/data_nodes_stateful_set.yaml")
 	if err != nil {
 		setupLog.Error(err, "unable to read data node stateful set asset")
@@ -118,8 +118,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	statefulSet := statefulSetObject.(*appsv1.StatefulSet)
-	deployment := deploymentObject.(*appsv1.Deployment)
+	_ = statefulSetObject.(*appsv1.StatefulSet)
+	_ = deploymentObject.(*appsv1.Deployment)
 
 	// if the enable-http2 flag is false (the default), http/2 should be disabled
 	// due to its vulnerabilities. More specifically, disabling http/2 will
