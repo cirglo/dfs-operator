@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: name-nodes
+  namespace: dfs
+  labels:
+    app: name-nodes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: name-nodes
+  template:
+    metadata:
+      name: name-nodes
+      labels:
+        app: name-nodes
+    spec:
+      containers:
+        - name: name-nodes
+          image: dfs-name-node:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 50070
+              protocol: TCP
+      restartPolicy: Always
+      

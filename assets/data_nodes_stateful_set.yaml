@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: data-nodes
+  namespace: dfs
+labels:
+  app: dfs
+spec:
+  selector:
+    matchLabels:
+      app: dfs
+  serviceName: data-nodes
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: dfs
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: data-node
+          image: registry.k8s.io/dfs-data-node:0.1
+          ports:
+            - containerPort: 5135
+              name: grpc
+          volumeMounts:
+            - name: data
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "default"
+        resources:
+          requests:
+            storage: 10Gi
