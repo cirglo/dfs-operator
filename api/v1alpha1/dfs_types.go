@@ -37,19 +37,19 @@ type DFSSpec struct {
 	NumNameNodeServers *int32 `json:"numNameNodeServers"`
 
 	// +kubebuilder:default:=5135
-	// +kubebuilder:validation:Required`
+	// +kubebuilder:validation:Required
 	DataNodePort *int32 `json:"dataNodePort"`
 
 	// +kubebuilder:default:=50070
-	// +kubebuilder:validation:Required`
+	// +kubebuilder:validation:Required
 	NameNodePort *int32 `json:"nameNodePort"`
 
 	// +kubebuilder:default:=default
-	// +kubebuilder:validation:Required`
+	// +kubebuilder:validation:Required
 	DataNodeStorageClassName *string `json:"dataNodetorageClassName"`
 
-	// +kubebuilder:default:=10Gi
-	// +kubebuilder:validation:Required`
+	// +kubebuilder:default:="10Gi"
+	// +kubebuilder:validation:Required
 	DataNodeStorageSize *string `json:"dataNodeStorageSize"`
 }
 
