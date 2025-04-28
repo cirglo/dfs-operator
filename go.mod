@@ -1,4 +1,4 @@
-module github.com/cirglo/dfs-operator
+module github.com/cirglo/dfs-operand
 
 go 1.24.2
 
