@@ -7,7 +7,9 @@ rules:
 - apiGroups:
   - storage.cirglo.com
   resources:
+  - deployments
   - dfs
+  - statefulsets
   verbs:
   - create
   - delete

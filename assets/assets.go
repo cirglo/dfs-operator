@@ -9,11 +9,8 @@ import (
 )
 
 var (
-	//go:embed manifests/data_nodes_stateful_set.yaml
-	dataNodeStatefulSet embed.FS
-
-	//go:embed manifests/name_nodes_deployment.yaml
-	nameNodeDeployment embed.FS
+	//go:embed manifests/*
+	manifests embed.FS
 
 	appsScheme = runtime.NewScheme()
 
@@ -27,7 +24,7 @@ func init() {
 }
 
 func GetDataNodeStatefulSetFromFile() *appsv1.StatefulSet {
-	bytes, err := nameNodeDeployment.ReadFile("manifests/data_nodes_stateful_set.yaml")
+	bytes, err := manifests.ReadFile("manifests/data_nodes_stateful_set.yaml")
 	if err != nil {
 		panic(err)
 	}
@@ -46,7 +43,7 @@ func GetDataNodeStatefulSetFromFile() *appsv1.StatefulSet {
 }
 
 func GetNameNodeDeploymentFromFile() *appsv1.Deployment {
-	bytes, err := dataNodeStatefulSet.ReadFile("manifests/name_nodes_deployment.yaml")
+	bytes, err := manifests.ReadFile("manifests/name_nodes_deployment.yaml")
 	if err != nil {
 		panic(err)
 	}
