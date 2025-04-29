@@ -17,7 +17,7 @@ spec:
         app: name-nodes
     spec:
       containers:
-        - name: name-nodes
+        - name: name-node
           image: dfs-name-node:latest
           imagePullPolicy: IfNotPresent
           ports:

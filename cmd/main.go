@@ -38,24 +38,13 @@ import (
 	storagev1alpha1 "github.com/cirglo/dfs-operator/api/v1alpha1"
 	"github.com/cirglo/dfs-operator/internal/controller"
 	appsv1 "k8s.io/api/apps/v1"
-	"k8s.io/apimachinery/pkg/runtime/serializer"
-
 	// +kubebuilder:scaffold:imports
-
-	"embed"
 )
 
 var (
-	scheme     = runtime.NewScheme()
-	appsCodecs = serializer.NewCodecFactory(scheme)
-	setupLog   = ctrl.Log.WithName("setup")
+	scheme   = runtime.NewScheme()
+	setupLog = ctrl.Log.WithName("setup")
 )
-
-//go:embed assets/data_nodes_stateful_set.yaml
-var dataNodeStatefulSet embed.FS
-
-//go:embed assets/name_nodes_deployment.yaml
-var nameNodeDeployment embed.FS
 
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
@@ -93,33 +82,6 @@ func main() {
 		setupLog.Error(err, "unable to add apps v1 scheme")
 		os.Exit(1)
 	}
-
-	statefulSetBytes, err := dataNodeStatefulSet.ReadFile("assets/data_nodes_stateful_set.yaml")
-	if err != nil {
-		setupLog.Error(err, "unable to read data node stateful set asset")
-		os.Exit(1)
-	}
-
-	deploymentBytes, err := nameNodeDeployment.ReadFile("assets/name_node_deployment.yaml")
-	if err != nil {
-		setupLog.Error(err, "unable to read name node deployment asset")
-		os.Exit(1)
-	}
-
-	statefulSetObject, err := runtime.Decode(appsCodecs.UniversalDecoder(appsv1.SchemeGroupVersion), statefulSetBytes)
-	if err != nil {
-		setupLog.Error(err, "unable to decode data node stateful set asset")
-		os.Exit(1)
-	}
-
-	deploymentObject, err := runtime.Decode(appsCodecs.UniversalDecoder(appsv1.SchemeGroupVersion), deploymentBytes)
-	if err != nil {
-		setupLog.Error(err, "unable to decode name node deployment asset")
-		os.Exit(1)
-	}
-
-	_ = statefulSetObject.(*appsv1.StatefulSet)
-	_ = deploymentObject.(*appsv1.Deployment)
 
 	// if the enable-http2 flag is false (the default), http/2 should be disabled
 	// due to its vulnerabilities. More specifically, disabling http/2 will
